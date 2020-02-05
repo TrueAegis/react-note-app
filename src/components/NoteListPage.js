@@ -2,8 +2,12 @@ import React from "react";
 import NoteListItem from "./NoteListItem.js";
 
 export default function NoteListPage() {
-    function handleListItemClick(event) {
-        alert(event.target.id + " clicked!");
+    function handleListItemClick(id) {
+        if(id != null){
+            alert(id + " clicked!");
+        } else {
+            console.log("Error: ID was not set");
+        } 
     }
 
     return (

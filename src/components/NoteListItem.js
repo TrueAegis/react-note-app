@@ -8,12 +8,10 @@ export default function NoteListPage(props) {
     
     return (
         //jsx
-        <div className="listItem">
-            <h1>Note</h1>
-            <div className="item">
-                <p onClick = {onClick} id = {id}>{truncate(text)}</p>
+        <div className="listItem" onClick = {() => onClick(id)}>
+                <p>{truncate(text)}</p>
                 <p>{dateTimeText}</p>
-            </div>
+            
         </div>
     );
 }
