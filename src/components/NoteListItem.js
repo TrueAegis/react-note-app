@@ -1,25 +1,45 @@
 /* eslint-disable react/no-typos */
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 export default function NoteListPage(props) {
-    const { id, text, createdAt, onClick } = props;
+    const {
+        createdAt,
+        id,
+        onClick,
+        text
+    } = props;
+
+    // const [stateVariable, setStateVariable] = useState(initialValue);
+    const [timesClicked, setTimesClicked] = useState(0);
+
     const truncate = (text) => text.length > 200 ? `${text.substring(0, 200)}...` : text;
-    
+
+    const handleItemClick = (event) => {
+        event.preventDefault();
+        setTimesClicked(timesClicked + 1);
+        if(onClick) {
+            onClick(id);
+        }
+    }
+    //dayjs(createdAt).format("h:m a on M/D/YYYY")
     return (
         //jsx
-        <div className="listItem" onClick = {() => onClick(id)}>
-                <p>{truncate(text)}</p>
-                <p>{dayjs(createdAt).format("h:m a on M/D/YYYY")}</p>
-            
+        <div className="listItem" onClick={handleItemClick}>
+            <p>{truncate(text)}</p>
+            <p>{dayjs(createdAt).fromNow()}</p>
+            <p>Number of clicks: {timesClicked} times</p>
         </div>
     );
 }
 
-NoteListPage.PropTypes={
-    id : PropTypes.string.isRequired,
-    text : PropTypes.string.isRequired,
-    createdAt : PropTypes.string.isRequired,
-    onClick : PropTypes.func
+NoteListPage.PropTypes = {
+    createdAt: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
+    text: PropTypes.string.isRequired
 }
