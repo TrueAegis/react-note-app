@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import ReactMarkdown from "react-markdown";
 
 dayjs.extend(relativeTime);
 
@@ -19,6 +20,14 @@ export default function NoteListPage(props) {
 
     const truncate = (text) => text.length > 200 ? `${text.substring(0, 200)}...` : text;
 
+    const formatDate = (date) => {
+        if (date >= (Date.now() - 60 * 60 * 24 * 7 * 1000)){
+            return dayjs(date).fromNow();
+        } else{
+            return dayjs(date).format("h:m a on M/D/YYYY");
+        }
+    }
+
     const handleItemClick = (event) => {
         event.preventDefault();
         setTimesClicked(timesClicked + 1);
@@ -30,8 +39,8 @@ export default function NoteListPage(props) {
     return (
         //jsx
         <div className="listItem" onClick={handleItemClick}>
-            <p>{truncate(text)}</p>
-            <p>{dayjs(createdAt).fromNow()}</p>
+            <ReactMarkdown source = {truncate(text)} />
+            <p>{formatDate(createdAt)}</p>
             <p>Number of clicks: {timesClicked} times</p>
         </div>
     );

@@ -3,6 +3,8 @@ import NoteListItem from "./NoteListItem";
 import NoteEditPage from "./NoteEditPage";
 
 const oneHourAgo = Date.now() - (1 * 60 * 60 * 1000);
+const oneWeekAgo = Date.now() - (60 * 60 * 24 * 6.999 * 1000);
+const oneMonthAgo = Date.now() - (60 * 60 * 24 * 30.5 * 1000);
 
 const initialNotes = [
     {
@@ -13,13 +15,13 @@ const initialNotes = [
     },
     {
         id: "2",
-        createdAt: new Date(oneHourAgo),
+        createdAt: new Date(oneWeekAgo),
         text: "This is a note 2"
     },
     {
         id: "3",
-        createdAt: new Date(oneHourAgo),
-        text: "This is a note 3"
+        createdAt: new Date(oneMonthAgo),
+        text: "React _is_ **fun**!"
     }
 ];
 
@@ -47,10 +49,23 @@ export default function NoteListPage() {
         setSelectedNoteID(null);
     }
 
+    function handleCancel(){
+        setSelectedNoteID(null);
+    }
+
+    function handleDelete(){
+        const deleteNote = notes.map((note) => {
+                return note.id;    
+        }).indexOf(selectedNoteID);
+        
+        initialNotes.splice(deleteNote, 1);
+        setSelectedNoteID(null);
+    }
+
     if (selectedNoteID) {
         const selectedNote = notes.find((note) => note.id === selectedNoteID);
         return (
-            <NoteEditPage onSave={handleOnSave} text={selectedNote.text} />
+            <NoteEditPage onSave={handleOnSave} onCancel={handleCancel} onDelete={handleDelete} text={selectedNote.text} />
         );
     }
 
