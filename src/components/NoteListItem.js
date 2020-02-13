@@ -7,7 +7,7 @@ import ReactMarkdown from "react-markdown";
 
 dayjs.extend(relativeTime);
 
-export default function NoteListPage(props) {
+export default function NoteListItem(props) {
     const {
         createdAt,
         id,
@@ -15,38 +15,37 @@ export default function NoteListPage(props) {
         text
     } = props;
 
-    // const [stateVariable, setStateVariable] = useState(initialValue);
     const [timesClicked, setTimesClicked] = useState(0);
 
     const truncate = (text) => text.length > 200 ? `${text.substring(0, 200)}...` : text;
 
-    const formatDate = (date) => {
-        if (date >= (Date.now() - 60 * 60 * 24 * 7 * 1000)){
-            return dayjs(date).fromNow();
-        } else{
-            return dayjs(date).format("h:m a on M/D/YYYY");
-        }
-    }
-
     const handleItemClick = (event) => {
         event.preventDefault();
         setTimesClicked(timesClicked + 1);
-        if(onClick) {
+        if (onClick) {
             onClick(id);
         }
     }
-    //dayjs(createdAt).format("h:m a on M/D/YYYY")
+
     return (
-        //jsx
+
         <div className="listItem" onClick={handleItemClick}>
-            <ReactMarkdown source = {truncate(text)} />
+            <ReactMarkdown source={truncate(text)} />
             <p>{formatDate(createdAt)}</p>
             <p>Number of clicks: {timesClicked} times</p>
         </div>
     );
 }
 
-NoteListPage.PropTypes = {
+const formatDate = (date) => {
+    if (date >= (Date.now() - 60 * 60 * 24 * 7 * 1000)) {
+        return dayjs(date).fromNow();
+    } else {
+        return dayjs(date).format("h:m a on M/D/YYYY");
+    }
+}
+
+NoteListItem.PropTypes = {
     createdAt: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     onClick: PropTypes.func,
