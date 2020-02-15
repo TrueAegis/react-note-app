@@ -12,18 +12,16 @@ export default function NoteListItem(props) {
         createdAt,
         id,
         onClick,
-        text
+        text //test if text prop is empty
     } = props;
 
-    const [timesClicked, setTimesClicked] = useState(0);
-
-    const truncate = (text) => text.length > 200 ? `${text.substring(0, 200)}...` : text;
+    const truncate = (text) => text.length > 200 ? `${text.substring(0, 200)}...` : text; //Test short text or long text
 
     const handleItemClick = (event) => {
         event.preventDefault();
-        setTimesClicked(timesClicked + 1);
+        
         if (onClick) {
-            onClick(id);
+            onClick(id); //Test click actions
         }
     }
 
@@ -32,12 +30,11 @@ export default function NoteListItem(props) {
         <div className="listItem" onClick={handleItemClick}>
             <ReactMarkdown source={truncate(text)} />
             <p>{formatDate(createdAt)}</p>
-            <p>Number of clicks: {timesClicked} times</p>
         </div>
     );
 }
 
-const formatDate = (date) => {
+const formatDate = (date) => { // Test different date formats
     if (date >= (Date.now() - 60 * 60 * 24 * 7 * 1000)) {
         return dayjs(date).fromNow();
     } else {
