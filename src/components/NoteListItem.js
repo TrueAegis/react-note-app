@@ -12,8 +12,6 @@ export default function NoteListItem(props) {
         text 
     } = props;
 
-    const truncate = (text) => text.length > 200 ? `${text.substring(0, 200)}...` : text; 
-
     const handleItemClick = (event) => {
         event.preventDefault();
         if (onClick) {
@@ -29,6 +27,16 @@ export default function NoteListItem(props) {
     );
 }
 
+function truncate(text)
+{
+    if(text.length > 200 && text !== ""){
+        return `${text.substring(0, 200)}...`;
+    } else if(text.length < 200 && text !== ""){
+        return text;
+    } else {
+        return "No note text";
+    }
+}
 NoteListItem.propTypes = {
     createdAt: PropTypes.instanceOf(Date).isRequired,
     id: PropTypes.string.isRequired,
