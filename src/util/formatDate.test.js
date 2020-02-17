@@ -1,5 +1,11 @@
 import formatDate from "./formateDate";
 
+test("Format Date Test: 5 minutes ago", () => {
+    const testDate = new Date(Date.now() - (60 * 5 * 1000));
+    const result = formatDate(testDate);
+    expect(result).toBe("5 minutes ago");
+});
+
 test("Format Date Test: > One Week", () => {
     const testDate = new Date("2020-01-01T12:05:00");
     const result = formatDate(testDate);
@@ -11,3 +17,4 @@ test("Format Date Test: < One Week", () => {
     const result = formatDate(testDate);
     expect(result).toBe("6 days ago");
 });
+

@@ -29,9 +29,9 @@ export default function NoteListItem(props) {
 
 function truncate(text)
 {
-    if(text.length > 200 && text !== ""){
+    if(text.length > 200 && text.trim() !== ""){
         return `${text.substring(0, 200)}...`;
-    } else if(text.length < 200 && text !== ""){
+    } else if(text.length < 200 && text.trim() !== ""){
         return text;
     } else {
         return "No note text";

@@ -72,3 +72,11 @@ export const ErrorTest = () => {
          text="This can be clicked" />
     );
 };
+
+// Spaces Only
+
+export const SpacesOnly = () => {
+    return (
+        <NoteListItem id="1" createdAt={new Date()} text=" " />
+    );
+};
