@@ -1,52 +1,44 @@
 /* eslint-disable react/no-typos */
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
 import ReactMarkdown from "react-markdown";
-
-dayjs.extend(relativeTime);
+import formatDate from "../util/formateDate";
 
 export default function NoteListItem(props) {
     const {
         createdAt,
         id,
         onClick,
-        text
+        text 
     } = props;
-
-    const [timesClicked, setTimesClicked] = useState(0);
-
-    const truncate = (text) => text.length > 200 ? `${text.substring(0, 200)}...` : text;
 
     const handleItemClick = (event) => {
         event.preventDefault();
-        setTimesClicked(timesClicked + 1);
         if (onClick) {
-            onClick(id);
+            onClick(id); 
         }
     }
 
     return (
-
         <div className="listItem" onClick={handleItemClick}>
             <ReactMarkdown source={truncate(text)} />
             <p>{formatDate(createdAt)}</p>
-            <p>Number of clicks: {timesClicked} times</p>
         </div>
     );
 }
 
-const formatDate = (date) => {
-    if (date >= (Date.now() - 60 * 60 * 24 * 7 * 1000)) {
-        return dayjs(date).fromNow();
+function truncate(text)
+{
+    if(text.length > 200 && text.trim() !== ""){
+        return `${text.substring(0, 200)}...`;
+    } else if(text.length < 200 && text.trim() !== ""){
+        return text;
     } else {
-        return dayjs(date).format("h:m a on M/D/YYYY");
+        return "No note text";
     }
 }
-
-NoteListItem.PropTypes = {
-    createdAt: PropTypes.string.isRequired,
+NoteListItem.propTypes = {
+    createdAt: PropTypes.instanceOf(Date).isRequired,
     id: PropTypes.string.isRequired,
     onClick: PropTypes.func,
     text: PropTypes.string.isRequired
