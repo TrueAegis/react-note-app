@@ -1,13 +1,15 @@
 import React from 'react';
+import { IonApp } from "@ionic/react";
 import NoteListPage from "./components/NoteListPage.js";
-import './App.css';
-
+import "./ionicStyles";
 
 function App() {
   return (
-    <div className = "App">
-      <NoteListPage/>
-    </div>
+    <IonApp>
+      <div className="App">
+        <NoteListPage />
+      </div>
+    </IonApp>
   );
 }
 

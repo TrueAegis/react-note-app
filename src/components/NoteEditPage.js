@@ -18,6 +18,6 @@ export default function NoteEditPage(props) {
     );
 }
 
-NoteEditPage.PropTypes = {
+NoteEditPage.propTypes = {
     text: PropTypes.string.isRequired
 };

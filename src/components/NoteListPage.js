@@ -1,4 +1,13 @@
 import React, { useState } from "react";
+import {
+    IonPage,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonList
+} from "@ionic/react";
+import { add } from "ionicons/icons";
 import NoteListItem from "./NoteListItem";
 import NoteEditPage from "./NoteEditPage";
 
@@ -49,11 +58,11 @@ export default function NoteListPage() {
         setSelectedNoteID(null);
     }
 
-    function handleCancel(){
+    function handleCancel() {
         setSelectedNoteID(null);
     }
 
-    function handleDelete(){
+    function handleDelete() {
         const deleteNote = notes.filter((note) => note.id !== selectedNoteID);
         setNotes(deleteNote);
         setSelectedNoteID(null);
@@ -67,10 +76,14 @@ export default function NoteListPage() {
     }
 
     return (
-        //JSX
-        <div className="page">
-            <h1>Note List</h1>
-            <div className="list">
+        <IonPage>
+            <IonHeader>
+                <IonToolbar>
+                  <IonTitle>Note List</IonTitle>  
+                </IonToolbar>
+            </IonHeader>
+            <IonContent>
+                <IonList lines ="full">
                 {
                     notes.map((note) => {
                         return (
@@ -83,9 +96,10 @@ export default function NoteListPage() {
                             />
                         );
                     })
-                }
-            </div>
-        </div>
+                } 
+                </IonList>
+            </IonContent>
+        </IonPage>
     );
 
 }
