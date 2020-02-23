@@ -38,7 +38,7 @@ export default function NoteEditPage(props) {
                     <IonTitle>Note Edit</IonTitle>
                     <IonButtons slot="primary">
                         <IonButton color="secondary" onClick={() => setShowActions(true)}>
-                            <IonIcon slot="icon-only" icon={ellipsisHorizontal} />
+                            <IonIcon slot="icon-only" icon={ellipsisHorizontal}/>
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>
