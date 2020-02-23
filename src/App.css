@@ -1,0 +1,10 @@
+:root {
+    --ion-background-color: #ffffff;
+    --ion-text-color: #000;
+    text-align: center;
+}
+
+ion-label {
+    text-align: center;
+    padding: 20px;
+}

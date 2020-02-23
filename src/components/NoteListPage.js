@@ -14,6 +14,7 @@ import { add } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import NoteListItem from "./NoteListItem";
 import useNotes from "../hooks/useNotes";
+import "./NoteEditPage.module.css";
 
 export default function NoteListPage() {
     const { notes, createNote } = useNotes();
@@ -35,7 +36,7 @@ export default function NoteListPage() {
                     <IonTitle>Note List</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent>
+            <IonContent >
                 <IonList lines="full">
                     {
                         notes.map((note) => {
@@ -51,7 +52,7 @@ export default function NoteListPage() {
                         })
                     }
                 </IonList>
-                <IonFab vertical="button" horizontal="end" slot="fixed">
+                <IonFab vertical="bottom" horizontal="end" slot="fixed">
                     <IonFabButton onClick={handleNewNoteClick}>
                         <IonIcon icon={add} />
                     </IonFabButton>
