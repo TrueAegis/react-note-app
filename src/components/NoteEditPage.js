@@ -24,7 +24,7 @@ export default function NoteEditPage(props) {
 
 
     const [value, setValue] = useState(text);
-    const { showActions, setShowActions } = useState(false);
+    const [ showActions, setShowActions ] = useState(false);
 
     return (
         <IonPage>

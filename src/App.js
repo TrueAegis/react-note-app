@@ -5,6 +5,7 @@ import { Redirect, Route } from "react-router";
 import NoteEditPageController from "./components/NoteEditPageController.js";
 import NoteListPage from "./components/NoteListPage.js";
 import { NotesProvider } from "./hooks/useNotes";
+import "./App.css";
 import "./ionicStyles";
 
 function App() {
