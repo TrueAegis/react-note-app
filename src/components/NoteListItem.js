@@ -2,6 +2,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ReactMarkdown from "react-markdown";
+import { IonItem, IonLabel } from "@ionic/react";
 import formatDate from "../util/formateDate";
 
 export default function NoteListItem(props) {
@@ -9,29 +10,30 @@ export default function NoteListItem(props) {
         createdAt,
         id,
         onClick,
-        text 
+        text
     } = props;
 
     const handleItemClick = (event) => {
         event.preventDefault();
         if (onClick) {
-            onClick(id); 
+            onClick(id);
         }
     }
 
     return (
-        <div className="listItem" onClick={handleItemClick}>
-            <ReactMarkdown source={truncate(text)} />
-            <p>{formatDate(createdAt)}</p>
-        </div>
+        <IonItem onClick={handleItemClick}>
+            <IonLabel>
+                <ReactMarkdown source={truncate(text)} />
+                <p>{formatDate(createdAt)}</p>
+            </IonLabel>
+        </IonItem>
     );
 }
 
-function truncate(text)
-{
-    if(text.length > 200 && text.trim() !== ""){
+function truncate(text) {
+    if (text.length > 200 && text.trim() !== "") {
         return `${text.substring(0, 200)}...`;
-    } else if(text.length < 200 && text.trim() !== ""){
+    } else if (text.length < 200 && text.trim() !== "") {
         return text;
     } else {
         return "No note text";

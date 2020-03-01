@@ -1,18 +1,10 @@
-.App {
-  text-align: center;
+:root {
+    --ion-background-color: #ffffff;
+    --ion-text-color: #000;
+    text-align: center;
 }
 
-.listItem{
-  background-color: rgb(156, 156, 156);
-  padding: 5px;
-  margin: 5px;
-  cursor: pointer;
-}
-
-.listItem:nth-of-type(odd){
-  background-color: rgb(177, 177, 177);
-}
-
-.listItem:hover {
-  background-color: rgb(188, 220, 248);
+ion-label {
+    text-align: center;
+    padding: 20px;
 }
