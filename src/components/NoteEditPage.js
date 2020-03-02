@@ -10,7 +10,8 @@ import {
     IonButtons,
     IonButton,
     IonIcon,
-    IonActionSheet
+    IonActionSheet,
+    IonAlert
 } from "@ionic/react";
 import { chevronBack, ellipsisHorizontal, trash, close } from "ionicons/icons";
 import styles from "./NoteEditPage.module.css";
@@ -24,7 +25,8 @@ export default function NoteEditPage(props) {
 
 
     const [value, setValue] = useState(text);
-    const [ showActions, setShowActions ] = useState(false);
+    const [showActions, setShowActions] = useState(false);
+    const [deleteAlert, setDeleteAlert] = useState(false);
 
     return (
         <IonPage>
@@ -38,7 +40,7 @@ export default function NoteEditPage(props) {
                     <IonTitle>Note Edit</IonTitle>
                     <IonButtons slot="primary">
                         <IonButton color="secondary" onClick={() => setShowActions(true)}>
-                            <IonIcon slot="icon-only" icon={ellipsisHorizontal}/>
+                            <IonIcon slot="icon-only" icon={ellipsisHorizontal} />
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>
@@ -53,13 +55,34 @@ export default function NoteEditPage(props) {
                             text: "Delete",
                             role: "destructive",
                             icon: trash,
-                            handler: onDelete
+                            handler: () => setDeleteAlert(true)
+                            //handler: onDelete
                         },
                         {
                             text: "Cancel",
                             role: "cancel",
                             icon: close,
                             handler: () => setShowActions(false)
+                        }
+                    ]}
+                />
+                <IonAlert
+                    isOpen={deleteAlert}
+                    onDidDismiss={() => setDeleteAlert(false)}
+                    subHeader={'Deleting Note!'}
+                    message={'Would you like to delete this note?'}
+                    buttons={[
+                        {
+                            text: 'Okay',
+                            handler: onDelete
+                        },
+                        {
+                            text: 'Cancel',
+                            role: 'cancel',
+                            cssClass: 'secondary',
+                            handler: cancel => {
+                                console.log('Confirm Cancel');
+                            }
                         }
                     ]}
                 />

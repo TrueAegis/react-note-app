@@ -7,14 +7,19 @@ import useNotes from "../hooks/useNotes";
 export default function NoteEditPageController() {
     const { id } = useParams();
     const history = useHistory();
-    const {notes, deleteNote, updateNote } = useNotes();
+    const { notes, deleteNote, updateNote } = useNotes();
 
     const selectedNote = notes.find((note) => note.id === id);
     if (!selectedNote) return null;
 
     function handleOnSave(updatedNoteText) {
-        updateNote(id, updatedNoteText);
-        history.goBack();
+        const trimmedText = updatedNoteText.replace(/\s/g, ''); //Trims white space in note to check if empty
+        if (trimmedText === "") {
+            handleDelete();
+        } else {
+            updateNote(id, updatedNoteText);
+            history.goBack();
+        }
     }
 
     function handleDelete() {
