@@ -13,6 +13,7 @@ import {
     IonActionSheet,
     IonAlert
 } from "@ionic/react";
+import { useTranslation } from "react-i18next";
 import { chevronBack, ellipsisHorizontal, trash, close, albums } from "ionicons/icons";
 import styles from "./NoteEditPage.module.css";
 
@@ -28,6 +29,7 @@ export default function NoteEditPage(props) {
     const [value, setValue] = useState(text);
     const [showActions, setShowActions] = useState(false);
     const [deleteAlert, setDeleteAlert] = useState(false);
+    const { t } = useTranslation();
 
     return (
         <IonPage>
@@ -38,7 +40,7 @@ export default function NoteEditPage(props) {
                             <IonIcon slot="icon-only" icon={chevronBack} />
                         </IonButton>
                     </IonButtons>
-                    <IonTitle>Note Edit</IonTitle>
+                    <IonTitle>{t("noteEditPageTitle")}</IonTitle>
                     <IonButtons slot="primary">
                         <IonButton color="secondary" onClick={() => setShowActions(true)}>
                             <IonIcon slot="icon-only" icon={ellipsisHorizontal} />
@@ -53,18 +55,18 @@ export default function NoteEditPage(props) {
                     onDidDismiss={() => setShowActions(false)}
                     buttons={[
                         {
-                            text: "Archive",
+                            text: t("actionButtonArchive"),
                             icon: albums,
                             handler: onArchive
                         },
                         {
-                            text: "Delete",
+                            text: t("actionButtonDelete"),
                             role: "destructive",
                             icon: trash,
                             handler: () => setDeleteAlert(true)
                         },
                         {
-                            text: "Cancel",
+                            text: t("actionButtonCancel"),
                             role: "cancel",
                             icon: close,
                             handler: () => setShowActions(false)
@@ -74,15 +76,15 @@ export default function NoteEditPage(props) {
                 <IonAlert
                     isOpen={deleteAlert}
                     onDidDismiss={() => setDeleteAlert(false)}
-                    subHeader={'Deleting Note!'}
-                    message={'Would you like to delete this note?'}
+                    subHeader={t("alertSubHeader")}
+                    message={t("alertMessage")}
                     buttons={[
                         {
-                            text: 'Okay',
+                            text: t("alertOkay"),
                             handler: onDelete
                         },
                         {
-                            text: 'Cancel',
+                            text: t("alertCancel"),
                             role: 'cancel',
                             cssClass: 'secondary',
                             handler: cancel => {

@@ -14,6 +14,7 @@ import {
 } from "@ionic/react";
 import { add, funnel } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import NoteListItem from "./NoteListItem";
 import useNotes from "../hooks/useNotes";
 import "./NoteEditPage.module.css";
@@ -21,6 +22,7 @@ import "./NoteEditPage.module.css";
 export default function NoteListPage() {
     const { notes, createNote } = useNotes();
     const history = useHistory();
+    const { t } = useTranslation();
     const [isArchived, setIsArchived] = useState(true);
 
     const filteredNotes = notes.filter((note) => {
@@ -40,7 +42,7 @@ export default function NoteListPage() {
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Note List</IonTitle>
+                    <IonTitle>{t("noteListPageTitle")}</IonTitle>
                     <IonButtons slot="secondary">
                         <IonButton color="secondary" onClick={() => setIsArchived(!isArchived)}>
                             <IonIcon slot="icon-only" icon={funnel} />
