@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     IonPage,
     IonHeader,
@@ -8,9 +8,11 @@ import {
     IonList,
     IonFab,
     IonFabButton,
-    IonIcon
+    IonIcon,
+    IonButtons,
+    IonButton
 } from "@ionic/react";
-import { add } from "ionicons/icons";
+import { add, funnel } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import NoteListItem from "./NoteListItem";
 import useNotes from "../hooks/useNotes";
@@ -19,6 +21,11 @@ import "./NoteEditPage.module.css";
 export default function NoteListPage() {
     const { notes, createNote } = useNotes();
     const history = useHistory();
+    const [isArchived, setIsArchived] = useState(true);
+
+    const filteredNotes = notes.filter((note) => {
+        return note.isArchived !== isArchived;
+    })
 
     function handleListItemClick(id) {
         history.push(`/notes/edit/${id}`);
@@ -34,12 +41,17 @@ export default function NoteListPage() {
             <IonHeader>
                 <IonToolbar>
                     <IonTitle>Note List</IonTitle>
+                    <IonButtons slot="secondary">
+                        <IonButton color="secondary" onClick={() => setIsArchived(!isArchived)}>
+                            <IonIcon slot="icon-only" icon={funnel} />
+                        </IonButton>
+                    </IonButtons>
                 </IonToolbar>
             </IonHeader>
             <IonContent >
                 <IonList lines="full">
                     {
-                        notes.map((note) => {
+                        filteredNotes.map((note) => {
                             return (
                                 <NoteListItem
                                     createdAt={note.createdAt}

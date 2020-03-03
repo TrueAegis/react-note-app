@@ -13,11 +13,12 @@ import {
     IonActionSheet,
     IonAlert
 } from "@ionic/react";
-import { chevronBack, ellipsisHorizontal, trash, close } from "ionicons/icons";
+import { chevronBack, ellipsisHorizontal, trash, close, albums } from "ionicons/icons";
 import styles from "./NoteEditPage.module.css";
 
 export default function NoteEditPage(props) {
     const {
+        onArchive,
         onDelete,
         onSave,
         text
@@ -52,11 +53,15 @@ export default function NoteEditPage(props) {
                     onDidDismiss={() => setShowActions(false)}
                     buttons={[
                         {
+                            text: "Archive",
+                            icon: albums,
+                            handler: onArchive
+                        },
+                        {
                             text: "Delete",
                             role: "destructive",
                             icon: trash,
                             handler: () => setDeleteAlert(true)
-                            //handler: onDelete
                         },
                         {
                             text: "Cancel",
@@ -92,6 +97,7 @@ export default function NoteEditPage(props) {
 }
 
 NoteEditPage.propTypes = {
+    onArchive: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onSave: PropTypes.func.isRequired,
     text: PropTypes.string.isRequired
