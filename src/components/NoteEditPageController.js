@@ -18,13 +18,15 @@ export default function NoteEditPageController() {
     }
 
     function handleOnSave(updatedNoteText) {
-        const trimmedText = updatedNoteText.replace(/\s/g, ''); //Trims white space in note to check if empty
-        if (trimmedText === "") {
-            handleDelete();
-        } else {
-            updateNote(id, updatedNoteText);
-            history.goBack();
-        }
+        updateNote(id, updatedNoteText);
+        history.goBack();
+        
+        // if (updatedNoteText === "") {
+        //     handleDelete();
+        // } else {
+        //     updateNote(id, updatedNoteText);
+        //     history.goBack();
+        // }
     }
 
     function handleDelete() {
