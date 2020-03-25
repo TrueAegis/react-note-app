@@ -7,14 +7,26 @@ import useNotes from "../hooks/useNotes";
 export default function NoteEditPageController() {
     const { id } = useParams();
     const history = useHistory();
-    const {notes, deleteNote, updateNote } = useNotes();
+    const { notes, deleteNote, updateNote, archiveNote } = useNotes();
 
     const selectedNote = notes.find((note) => note.id === id);
     if (!selectedNote) return null;
 
+    function handleOnArchive() {
+        archiveNote(id);
+        history.goBack();
+    }
+
     function handleOnSave(updatedNoteText) {
         updateNote(id, updatedNoteText);
         history.goBack();
+        
+        // if (updatedNoteText === "") {
+        //     handleDelete();
+        // } else {
+        //     updateNote(id, updatedNoteText);
+        //     history.goBack();
+        // }
     }
 
     function handleDelete() {
@@ -24,6 +36,7 @@ export default function NoteEditPageController() {
 
     return (
         <NoteEditPage
+            onArchive={handleOnArchive}
             onSave={handleOnSave}
             onDelete={handleDelete}
             text={selectedNote.text}

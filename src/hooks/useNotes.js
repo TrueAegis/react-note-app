@@ -61,6 +61,19 @@ export default function useNotes() {
                 return note;
             });
             saveNotes(updatedNotes);
+        },
+        archiveNote(id) {
+            const updatedNotes = notes.map((note) => {
+                if (note.id === id) {
+                    //make change
+                    return {
+                        ...note,
+                        isArchived: true
+                    };
+                }
+                return note;
+            });
+            saveNotes(updatedNotes);
         }
     };
 } //Each component will use this to access global state
