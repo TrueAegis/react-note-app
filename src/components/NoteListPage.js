@@ -15,15 +15,38 @@ import {
 import { add, funnel } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { gql, useQuery } from "@apollo/client";
 import NoteListItem from "./NoteListItem";
 import useNotes from "../hooks/useNotes";
 import "./NoteEditPage.module.css";
 
+const GET_NOTES = gql`
+    {
+        notes(includeArchived: true){
+            id 
+            createdAt
+            isArchived
+            text
+        }
+    }
+`;
+
 export default function NoteListPage() {
-    const { notes, createNote } = useNotes();
+    const { data, error, loading } = useQuery(GET_NOTES); //First run { null, null, true }
+    const { createNote } = useNotes();
     const history = useHistory();
     const { t } = useTranslation();
     const [isArchived, setIsArchived] = useState(true);
+
+    if (loading){
+        return "Loading..."; //TODO: loading spinner
+    }
+
+    if(error){
+        return `${error}`; //Displays on page for now
+    }
+
+    const notes = (data && data.notes) || [];
 
     const filteredNotes = notes.filter((note) => {
         return note.isArchived !== isArchived;
