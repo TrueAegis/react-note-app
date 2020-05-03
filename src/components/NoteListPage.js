@@ -15,34 +15,61 @@ import {
 import { add, funnel } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import NoteListItem from "./NoteListItem";
-import useNotes from "../hooks/useNotes";
 import "./NoteEditPage.module.css";
 
 const GET_NOTES = gql`
     {
-        notes(includeArchived: true){
-            id 
+        notes {
+            id
             createdAt
+            updatedAt
             isArchived
             text
+  }
+}
+`;
+
+const CREATE_NOTE = gql`
+    mutation createNote($note: CreateNoteInput!){
+        createNote(note: $note) {
+                id
+                createdAt
+                updatedAt
+                isArchived
+                text
+            }
         }
-    }
 `;
 
 export default function NoteListPage() {
-    const { data, error, loading } = useQuery(GET_NOTES); //First run { null, null, true }
-    const { createNote } = useNotes();
+    const [createNote] = useMutation(CREATE_NOTE, {
+        onCompleted(data) {
+            if(data && data.createNote) {
+                const id = data.createNote.id;
+                history.push(`./notes/edit/${id}`)
+            }
+        },
+        refetchQueries: [
+            {
+                query: GET_NOTES
+            }
+        ]
+    });
+    const { data, error, loading } = useQuery(GET_NOTES, {
+        pollInterval: 5000
+    }); //First run { null, null, true }
+    //const { createNote } = useNotes();
     const history = useHistory();
     const { t } = useTranslation();
     const [isArchived, setIsArchived] = useState(true);
 
-    if (loading){
+    if (loading) {
         return "Loading..."; //TODO: loading spinner
     }
 
-    if(error){
+    if (error) {
         return `${error}`; //Displays on page for now
     }
 
@@ -57,8 +84,13 @@ export default function NoteListPage() {
     }
 
     const handleNewNoteClick = () => {
-        const { id } = createNote();
-        history.push(`./notes/edit/${id}`)
+        createNote({
+            variables: {
+                note: {
+                    text: ""
+                }
+            }
+        });
     }
 
     return (
@@ -79,7 +111,7 @@ export default function NoteListPage() {
                         filteredNotes.map((note) => {
                             return (
                                 <NoteListItem
-                                    createdAt={note.createdAt}
+                                    createdAt={new Date(note.createdAt)}
                                     id={note.id}
                                     key={note.id}
                                     onClick={handleListItemClick}
