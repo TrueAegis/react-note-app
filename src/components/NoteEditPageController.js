@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import NoteEditPage from "./NoteEditPage";
 import useNotes from "../hooks/useNotes";
 
@@ -15,6 +15,30 @@ query note($id: ID!){
     }
 }
 `
+
+const DELETE_NOTE = gql`
+mutation deleteNote($id: ID!){
+    deleteNote(id: $id){
+        id
+        createdAt
+        updatedAt
+        isArchived
+        text  
+    } 
+}
+`
+const UPDATE_NOTE = gql`
+mutation updateNote($id: ID!, $note: NOTE!) {
+    updateNote(id: $id, note: $note){
+        id
+        createdAt
+        updatedAt
+        isArchived
+        text
+    }
+}
+`
+
 export default function NoteEditPageController() {
     const { id } = useParams();
     const history = useHistory();
@@ -23,13 +47,15 @@ export default function NoteEditPageController() {
             id
         }
     });
-    const { deleteNote, updateNote, archiveNote } = useNotes();
+    const [updateNote] = useMutation(UPDATE_NOTE);
+    const [deleteNote] = useMutation(DELETE_NOTE);
+    const { archiveNote } = useNotes();
 
-    if (loading){
+    if (loading) {
         return "Loading...";
     }
 
-    if (error){
+    if (error) {
         return `${error}`;
     }
 
@@ -42,19 +68,21 @@ export default function NoteEditPageController() {
     }
 
     function handleOnSave(updatedNoteText) {
-        updateNote(id, updatedNoteText);
+        updateNote({
+            variables: {
+                id: id,
+                text: ""
+            }
+        });
         history.goBack();
-        
-        // if (updatedNoteText === "") {
-        //     handleDelete();
-        // } else {
-        //     updateNote(id, updatedNoteText);
-        //     history.goBack();
-        // }
     }
 
     function handleDelete() {
-        deleteNote(id);
+        deleteNote({
+            variables: {
+                id
+            }
+        });
         history.goBack();
     }
 
