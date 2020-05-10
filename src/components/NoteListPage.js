@@ -19,7 +19,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import NoteListItem from "./NoteListItem";
 import "./NoteEditPage.module.css";
 
-const GET_NOTES = gql`
+export const GET_NOTES = gql`
     {
         notes {
             id

@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import NoteEditPage from "./NoteEditPage";
-import useNotes from "../hooks/useNotes";
+import { GET_NOTES } from "./NoteListPage";
 
 const GET_ONE_NOTE = gql`
 query note($id: ID!){
@@ -28,7 +28,7 @@ mutation deleteNote($id: ID!){
 }
 `
 const UPDATE_NOTE = gql`
-mutation updateNote($id: ID!, $note: NOTE!) {
+mutation updateNote($id: ID!, $note: UpdateNoteInput!) {
     updateNote(id: $id, note: $note){
         id
         createdAt
@@ -47,9 +47,25 @@ export default function NoteEditPageController() {
             id
         }
     });
-    const [updateNote] = useMutation(UPDATE_NOTE);
-    const [deleteNote] = useMutation(DELETE_NOTE);
-    const { archiveNote } = useNotes();
+    const [updateNote] = useMutation(UPDATE_NOTE, {
+        onCompleted(data){
+            if(data){
+             history.goBack();   
+            } 
+        }
+    });
+    const [deleteNote] = useMutation(DELETE_NOTE, {
+        onCompleted(data){
+            if(data){
+             history.goBack();   
+            }
+        },
+        refetchQueries: [
+            {
+                query: GET_NOTES
+            }
+        ]
+    });
 
     if (loading) {
         return "Loading...";
@@ -63,18 +79,25 @@ export default function NoteEditPageController() {
     if (!selectedNote) return null;
 
     function handleOnArchive() {
-        archiveNote(id);
-        history.goBack();
+        updateNote({
+            variables: {
+                id: id,
+                note: {
+                    isArchived: true
+                }
+            }
+        });
     }
 
     function handleOnSave(updatedNoteText) {
         updateNote({
             variables: {
                 id: id,
-                text: ""
+                note: {
+                    text: updatedNoteText
+                }
             }
         });
-        history.goBack();
     }
 
     function handleDelete() {
@@ -83,7 +106,6 @@ export default function NoteEditPageController() {
                 id
             }
         });
-        history.goBack();
     }
 
     return (
