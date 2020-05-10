@@ -12,7 +12,7 @@ import {
     IonButtons,
     IonButton
 } from "@ionic/react";
-import { add, funnel } from "ionicons/icons";
+import { add, funnel, funnelOutline } from "ionicons/icons";
 import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { gql, useMutation, useQuery } from "@apollo/client";
@@ -46,7 +46,7 @@ const CREATE_NOTE = gql`
 export default function NoteListPage() {
     const [createNote] = useMutation(CREATE_NOTE, {
         onCompleted(data) {
-            if(data && data.createNote) {
+            if (data && data.createNote) {
                 const id = data.createNote.id;
                 history.push(`./notes/edit/${id}`)
             }
@@ -100,7 +100,7 @@ export default function NoteListPage() {
                     <IonTitle>{t("noteListPageTitle")}</IonTitle>
                     <IonButtons slot="secondary">
                         <IonButton color="secondary" onClick={() => setIsArchived(!isArchived)}>
-                            <IonIcon slot="icon-only" icon={funnel} />
+                            <IonIcon slot="icon-only" icon={isArchived ? funnel : funnelOutline} />
                         </IonButton>
                     </IonButtons>
                 </IonToolbar>
