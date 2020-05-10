@@ -10,7 +10,7 @@ export default async function getApolloClient() {
     const client = new ApolloClient({
         cache,
         link: new HttpLink({
-            uri: "http://localhost:3030/",
+            uri: "http://192.168.1.162:3030/",
         })
     });
     return client;
